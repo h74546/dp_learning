@@ -45,4 +45,39 @@ scores = cross_validate(clf, X, y, scoring=scoring)
 sorted(scores.keys())
 
 scores['test_recall_macro']
-3.1.1.2.
+
+
+##Kfold 
+import numpy as np
+from sklearn.model_selection import KFold
+X=["a","b","c","d"]
+kf=KFold(n_splits=2)
+
+for train, test in kf.split(X):
+    print("%s %s" % (train,test))
+
+#leave one out(leave p out)
+from sklearn.model_selection import LeaveOneOut
+X=[1,2,3,4]
+loo=LeaveOneOut(P=1)
+for train, test in loo.split(X):
+    print("%s %s" % (train,test))
+
+##Leave one group
+from sklearn.model_selection import LeaveOneGroupOut
+
+X = [1, 5, 10, 50, 60, 70, 80]
+y = [0, 1, 1, 2, 2, 2, 2]
+groups = [1, 1, 2, 2, 3, 3, 3]
+logo = LeaveOneGroupOut()
+for train, test in logo.split(X, y, groups=groups):
+    print("%s %s" % (train, test))
+    
+##example by iris data
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import LeavePOut
+kf=KFold(n_splits=8)
+
+clf=svm.SVC(kernel="linear", C=1, random_state=42)
+scores=cross_val_score(clf,X,y,cv=kf.split(X))
+print("%0.2f accuracy with a standard deviation of %0.2f" % (scores.mean(),scores.std()))
